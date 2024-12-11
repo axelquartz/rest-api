@@ -1,10 +1,11 @@
 const catImage = document.getElementById("cat-image-1");
 const catImage2 = document.getElementById("cat-image-2");
 const catButton = document.getElementById("generate-cats-button");
+const saveFavoreCatsButton = document.querySelector(".save-favorite-cats-button");
 const errorDisplay = document.getElementById("error-display");
 const API_KEY = "api_key=live_KLPbsvkAcNRHqVoNHvclFCYyDUu0KxlF1AaDr3mXckeJCWQivtx2uO7wdUX259E4";
-const URL_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=2&breed_ids=siam&${API_KEY}`;
-const URL_FAVORITES = `https://api.thecatapi.com/v1/favourites?&${API_KEY}`;
+const URL_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=2&${API_KEY}`;
+const URL_FAVORITES = `https://api.thecatapi.com/v1/favourites?${API_KEY}`;
 
 async function fetchRandomCats() {
   const response = await fetch(URL_RANDOM, {
@@ -14,7 +15,7 @@ async function fetchRandomCats() {
     },
   });
   if (response.status !== 200) {
-    errorDisplay.textContent = `Error: ${response.status}`;
+    errorDisplay.textContent = `${data.message}: in fetchRandomCats`;
     return;
   }
   const data = await response.json();
@@ -31,15 +32,40 @@ async function fetchFavorites() {
       "Content-Type": "application/json",
     },
   });
-  if (response.status !== 200) {
-    errorDisplay.textContent = `Error: ${response.status}`;
-    return;
-  }
   const data = await response.json();
-  console.log(`Status: ${response.status}`);
+  console.log(data);
+  if (response.status !== 200) {
+    errorDisplay.textContent = `${data.message}: in fetchFavorites`;
+    return;
+  } else {
+    console.log(`Status: ${response.status}`);
+  }
+}
+
+async function saveToFavorites() {
+  const response = await fetch(URL_FAVORITES, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      image_id: "bgp",
+    }),
+  });
+  const data = await response.json();
+  console.log(response);
+  console.log(data);
+
+  if (response.status !== 200) {
+    errorDisplay.textContent = `${response.status}, ${data.message}: in fetchFavorites`;
+  }
+  // console.log(response);
+  // console.log(response.json());
 }
 
 catButton.addEventListener("click", fetchRandomCats);
+saveFavoreCatsButton.addEventListener("click", saveToFavorites);
 
 fetchRandomCats();
-fetchFavorites();
+// fetchFavorites();
+// saveToFavorites();
