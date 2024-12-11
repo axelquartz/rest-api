@@ -1,8 +1,8 @@
-const catImage = document.getElementById("cat-image");
-const catImage2 = document.getElementById("cat-image2");
-const catImage3 = document.getElementById("cat-image3");
-const catButton = document.getElementById("cat-button");
-const URL = "https://api.thecatapi.com/v1/images/search?limit=3&breed_ids=siam";
+const catImage = document.getElementById("cat-image-1");
+const catImage2 = document.getElementById("cat-image-2");
+const catImage3 = document.getElementById("cat-image-3");
+const catButton = document.getElementById("generate-cats-button");
+const URL = "https://api.thecatapi.com/v1/images/search?limit=3&breed_ids=siam&api_key=live_KLPbsvkAcNRHqVoNHvclFCYyDUu0KxlF1AaDr3mXckeJCWQivtx2uO7wdUX259E4";
 
 async function fetchCats() {
   try {

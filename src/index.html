@@ -11,12 +11,28 @@
     <h1>Random Cats</h1>
     <div class="container">
       <h2>This is a ranbdom cat</h2>
-      <div class="image-container">
-        <img src="" alt="cat" id="cat-image" />
-        <img src="" alt="cat" id="cat-image2" />
-        <img src="" alt="cat" id="cat-image3" />
-      </div>
-      <button id="cat-button">Get a new cat</button>
+      <section id="random-cats">
+        <article class="cat-card">
+          <img src="" alt="cat" id="cat-image-1" />
+          <button>Save to favorites</button>
+        </article>
+        <article class="cat-card">
+          <img src="" alt="cat" id="cat-image-2" />
+          <button>Save to favorites</button>
+        </article>
+        <article class="cat-card">
+          <img src="" alt="cat" id="cat-image-3" />
+          <button>Save to favorites</button>
+        </article>
+        <button id="generate-cats-button">Get new cats</button>
+      </section>
+      <section id="favorites">
+        <h2>Your favorite cats</h2>
+        <article class="cat-card">
+          <img src="" alt="cat" id="cat-image-4" />
+          <button>Remove from favorites</button>
+        </article>
+      </section>
     </div>
   </body>
 </html>
