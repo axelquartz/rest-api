@@ -1,10 +1,11 @@
 const catImage = document.getElementById("cat-image-1");
 const catImage2 = document.getElementById("cat-image-2");
+const catImage3 = document.getElementById("cat-image-3");
 const catButton = document.getElementById("generate-cats-button");
 const saveFavoreCatsButton = document.querySelector(".save-favorite-cats-button");
 const errorDisplay = document.getElementById("error-display");
 const API_KEY = "api_key=live_KLPbsvkAcNRHqVoNHvclFCYyDUu0KxlF1AaDr3mXckeJCWQivtx2uO7wdUX259E4";
-const URL_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=2&${API_KEY}`;
+const URL_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=2&breed_ids=rblu&${API_KEY}`;
 const URL_FAVORITES = `https://api.thecatapi.com/v1/favourites?${API_KEY}`;
 
 async function fetchRandomCats() {
@@ -33,7 +34,10 @@ async function fetchFavorites() {
     },
   });
   const data = await response.json();
+  catImage3.src = data[0].image.url;
   console.log(data);
+  // console.log(response);
+
   if (response.status !== 200) {
     errorDisplay.textContent = `${data.message}: in fetchFavorites`;
     return;
@@ -47,6 +51,7 @@ async function saveToFavorites() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "x-api-key": API_KEY,
     },
     body: JSON.stringify({
       image_id: "bgp",
@@ -54,8 +59,7 @@ async function saveToFavorites() {
   });
   const data = await response.json();
   console.log(response);
-  console.log(data);
-
+  // console.log(data);
   if (response.status !== 200) {
     errorDisplay.textContent = `${response.status}, ${data.message}: in fetchFavorites`;
   }
