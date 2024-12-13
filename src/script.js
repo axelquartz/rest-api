@@ -17,7 +17,8 @@ async function fetchRandomCats() {
   });
   if (response.status !== 200) {
     errorDisplay.textContent = `${data.message}: in fetchRandomCats`;
-    return;
+  } else {
+    console.log(`Status: ${response.status}`);
   }
   const data = await response.json();
   console.log(data);
@@ -34,13 +35,12 @@ async function fetchFavorites() {
     },
   });
   const data = await response.json();
-  catImage3.src = data[0].image.url;
+  catImage3.src = data[15].image.url;
   console.log(data);
   // console.log(response);
 
   if (response.status !== 200) {
     errorDisplay.textContent = `${data.message}: in fetchFavorites`;
-    return;
   } else {
     console.log(`Status: ${response.status}`);
   }
@@ -54,6 +54,7 @@ async function saveToFavorites() {
       "x-api-key": API_KEY,
     },
     body: JSON.stringify({
+      // Dynamic images
       image_id: "bgp",
     }),
   });
@@ -62,6 +63,8 @@ async function saveToFavorites() {
   // console.log(data);
   if (response.status !== 200) {
     errorDisplay.textContent = `${response.status}, ${data.message}: in fetchFavorites`;
+  } else {
+    console.log(`Status: ${response.status}`);
   }
   // console.log(response);
   // console.log(response.json());
