@@ -11,6 +11,7 @@ const errorDisplay = document.getElementById("error-display");
 const API_KEY = "api_key=live_KLPbsvkAcNRHqVoNHvclFCYyDUu0KxlF1AaDr3mXckeJCWQivtx2uO7wdUX259E4";
 const URL_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=2&breed_ids=rblu&${API_KEY}`;
 const URL_FAVORITES = `https://api.thecatapi.com/v1/favourites?${API_KEY}`;
+const URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?${API_KEY}`;
 
 async function fetchRandomCats() {
   const response = await fetch(URL_RANDOM, {
@@ -65,7 +66,7 @@ async function fetchFavorites() {
       createCard.append(createButton);
       favorites.appendChild(createCard);
       createButton.addEventListener("click", () => {
-        deleteFromFavorites(data.id);
+        deleteFromFavorites(cat.id);
       });
     });
   }
@@ -85,7 +86,7 @@ async function saveToFavorites(id) {
   });
   const data = await response.json();
   console.log(response);
-  // console.log(data);
+  console.log(data);
   if (response.status !== 200) {
     errorDisplay.textContent = `${response.status}, ${data.message}: in fetchFavorites`;
   } else {
@@ -97,18 +98,24 @@ async function saveToFavorites(id) {
 }
 
 async function deleteFromFavorites(id) {
-  const response = await fetch(URL_FAVORITES, {
+  const response = await fetch(URL_FAVORITES_DELETE(id), {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       "x-api-key": API_KEY,
     },
-    body: JSON.stringify({
-      image_id: id,
-    }),
   });
   const data = await response.json();
-  console.log(data);
+  console.log("data", data);
+  console.log("response", response);
+  console.log(id);
+
+  if (response.status !== 200) {
+    errorDisplay.textContent = `${response.status}, ${data.message}: in fetchFavorites`;
+  } else {
+    console.log(`Status: ${response.status}`);
+    console.log("Deleted from favorites");
+  }
 }
 
 catButton.addEventListener("click", fetchRandomCats);
