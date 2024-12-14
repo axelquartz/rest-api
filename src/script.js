@@ -60,10 +60,13 @@ async function fetchFavorites() {
       const createImage = document.createElement("img");
       createImage.src = cat.image.url;
       const createButton = document.createElement("button");
-      createButton.textContent = "Remove from favorites";
+      createButton.textContent = "Remove from favoritesX";
       createCard.appendChild(createImage);
       createCard.append(createButton);
       favorites.appendChild(createCard);
+      createButton.addEventListener("click", () => {
+        deleteFromFavorites(data.id);
+      });
     });
   }
 }
@@ -91,6 +94,21 @@ async function saveToFavorites(id) {
   }
   // console.log(response);
   // console.log(response.json());
+}
+
+async function deleteFromFavorites(id) {
+  const response = await fetch(URL_FAVORITES, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": API_KEY,
+    },
+    body: JSON.stringify({
+      image_id: id,
+    }),
+  });
+  const data = await response.json();
+  console.log(data);
 }
 
 catButton.addEventListener("click", fetchRandomCats);
