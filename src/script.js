@@ -1,6 +1,7 @@
+const createFavorites = document.createElement("section");
+createFavorites.id = "favorites";
 const catImage = document.getElementById("cat-image-1");
 const catImage2 = document.getElementById("cat-image-2");
-const favorites = document.getElementById("favorites");
 const favoriteCatImage = document.getElementById("favorite-cat-image-1");
 const favoriteCatImage2 = document.getElementById("favorite-cat-image-2");
 const favoriteCatImage3 = document.getElementById("favorite-cat-image-3");
@@ -56,6 +57,7 @@ async function fetchFavorites() {
   } else {
     console.log(`Status: ${response.status}`);
     data.forEach((cat) => {
+      document.body.appendChild(createFavorites);
       const createCard = document.createElement("article");
       createCard.classList.add("cat-card");
       const createImage = document.createElement("img");
@@ -64,7 +66,7 @@ async function fetchFavorites() {
       createButton.textContent = "Remove from favoritesX";
       createCard.appendChild(createImage);
       createCard.append(createButton);
-      favorites.appendChild(createCard);
+      createFavorites.appendChild(createCard);
       createButton.addEventListener("click", () => {
         deleteFromFavorites(cat.id);
       });
@@ -93,6 +95,8 @@ async function saveToFavorites(id) {
     console.log(`Status: ${response.status}`);
     console.log("saved to favorites");
   }
+  createFavorites.innerHTML = "";
+  fetchFavorites();
   // console.log(response);
   // console.log(response.json());
 }
@@ -115,6 +119,8 @@ async function deleteFromFavorites(id) {
   } else {
     console.log(`Status: ${response.status}`);
     console.log("Deleted from favorites");
+    createFavorites.innerHTML = "";
+    fetchFavorites();
   }
 }
 
