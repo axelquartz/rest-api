@@ -6,19 +6,20 @@ const favoriteCatImage = document.getElementById("favorite-cat-image-1");
 const favoriteCatImage2 = document.getElementById("favorite-cat-image-2");
 const favoriteCatImage3 = document.getElementById("favorite-cat-image-3");
 const catButton = document.getElementById("generate-cats-button");
-const saveFavoreCatsButton1 = document.querySelector(".save-favorite-cats-button-1");
-const saveFavoreCatsButton2 = document.querySelector(".save-favorite-cats-button-2");
+const saveFavorteCatsButton1 = document.getElementById("save-favorite-cats-button-1");
+const saveFavoriteCatsButton2 = document.getElementById("save-favorite-cats-button-2");
 const errorDisplay = document.getElementById("error-display");
-const API_KEY = "api_key=live_KLPbsvkAcNRHqVoNHvclFCYyDUu0KxlF1AaDr3mXckeJCWQivtx2uO7wdUX259E4";
-const URL_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=2&breed_ids=rblu&${API_KEY}`;
-const URL_FAVORITES = `https://api.thecatapi.com/v1/favourites?${API_KEY}`;
-const URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?${API_KEY}`;
+const API_KEY = "live_KLPbsvkAcNRHqVoNHvclFCYyDUu0KxlF1AaDr3mXckeJCWQivtx2uO7wdUX259E4";
+const URL_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=2&breed_ids=rblu&`;
+const URL_FAVORITES = `https://api.thecatapi.com/v1/favourites`;
+const URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`;
 
 async function fetchRandomCats() {
   const response = await fetch(URL_RANDOM, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "x-api-key": API_KEY,
     },
   });
   if (response.status !== 200) {
@@ -32,10 +33,14 @@ async function fetchRandomCats() {
   catImage2.src = data[1].url;
   console.log(`Status: ${response.status}`);
 
-  saveFavoreCatsButton1.addEventListener("click", () => {
+  saveFavorteCatsButton1.addEventListener("click", (event) => {
+    event.stopPropagation();
+    event.preventDefault();
     saveToFavorites(data[0].id);
   });
-  saveFavoreCatsButton2.addEventListener("click", () => {
+  saveFavoriteCatsButton2.addEventListener("click", (event) => {
+    event.stopPropagation();
+    event.preventDefault();
     saveToFavorites(data[1].id);
   });
 }
@@ -45,12 +50,11 @@ async function fetchFavorites() {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "X-API-KEY": API_KEY,
     },
   });
   const data = await response.json();
-  // catImage3.src = data[15].image.url;
   console.log(data);
-  // console.log(response);
 
   if (response.status !== 200) {
     errorDisplay.textContent = `${data.message}: in fetchFavorites`;
@@ -79,10 +83,9 @@ async function saveToFavorites(id) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": API_KEY,
+      "X-API-KEY": API_KEY,
     },
     body: JSON.stringify({
-      // Dynamic images
       image_id: id,
     }),
   });
@@ -97,8 +100,6 @@ async function saveToFavorites(id) {
   }
   createFavorites.innerHTML = "";
   fetchFavorites();
-  // console.log(response);
-  // console.log(response.json());
 }
 
 async function deleteFromFavorites(id) {
@@ -106,7 +107,7 @@ async function deleteFromFavorites(id) {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": API_KEY,
+      "X-API-KEY": API_KEY,
     },
   });
   const data = await response.json();
@@ -128,4 +129,3 @@ catButton.addEventListener("click", fetchRandomCats);
 
 fetchRandomCats();
 fetchFavorites();
-// saveToFavorites();
