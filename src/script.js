@@ -1,3 +1,4 @@
+const container = document.querySelector(".container");
 const createFavorites = document.createElement("section");
 createFavorites.id = "favorites";
 const catImage = document.getElementById("cat-image-1");
@@ -58,7 +59,7 @@ async function fetchFavorites() {
   } else {
     console.log(`Status: ${response.status}`);
     data.forEach((cat) => {
-      document.body.appendChild(createFavorites);
+      container.appendChild(createFavorites);
       const createCard = document.createElement("article");
       createCard.classList.add("cat-card");
       const createImage = document.createElement("img");
