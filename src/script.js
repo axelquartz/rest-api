@@ -13,6 +13,7 @@ const API_KEY = "live_KLPbsvkAcNRHqVoNHvclFCYyDUu0KxlF1AaDr3mXckeJCWQivtx2uO7wdU
 const URL_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=2&breed_ids=rblu&`;
 const URL_FAVORITES = `https://api.thecatapi.com/v1/favourites`;
 const URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`;
+let data;
 
 async function fetchRandomCats() {
   const response = await fetch(URL_RANDOM, {
@@ -27,23 +28,19 @@ async function fetchRandomCats() {
   } else {
     console.log(`Status: ${response.status}`);
   }
-  const data = await response.json();
+  data = await response.json();
   console.log(data);
   catImage.src = data[0].url;
   catImage2.src = data[1].url;
   console.log(`Status: ${response.status}`);
-
-  saveFavorteCatsButton1.addEventListener("click", (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-    saveToFavorites(data[0].id);
-  });
-  saveFavoriteCatsButton2.addEventListener("click", (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-    saveToFavorites(data[1].id);
-  });
 }
+
+saveFavorteCatsButton1.addEventListener("click", () => {
+  saveToFavorites(data[0].id);
+});
+saveFavoriteCatsButton2.addEventListener("click", () => {
+  saveToFavorites(data[1].id);
+});
 
 async function fetchFavorites() {
   const response = await fetch(URL_FAVORITES, {
@@ -53,7 +50,7 @@ async function fetchFavorites() {
       "X-API-KEY": API_KEY,
     },
   });
-  const data = await response.json();
+  data = await response.json();
   console.log(data);
 
   if (response.status !== 200) {
@@ -89,7 +86,7 @@ async function saveToFavorites(id) {
       image_id: id,
     }),
   });
-  const data = await response.json();
+  data = await response.json();
   console.log(response);
   console.log(data);
   if (response.status !== 200) {
@@ -110,7 +107,7 @@ async function deleteFromFavorites(id) {
       "X-API-KEY": API_KEY,
     },
   });
-  const data = await response.json();
+  data = await response.json();
   console.log("data", data);
   console.log("response", response);
   console.log(id);
