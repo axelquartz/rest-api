@@ -9,8 +9,15 @@
   </head>
   <body>
     <h1>Random Cats</h1>
+    <section id="upload-cat">
+      <h2>Upload a photo of Your favorite cat</h2>
+      <form id="upload-form">
+        <input id="file" type="file" name="file" />
+        <button type="button" onclick="uploadFile()">Upload photo</button>
+      </form>
+    </section>
     <div class="container">
-      <h2>This is a ranbdom cat</h2>
+      <h2>These are two random cats</h2>
       <span id="error-display"></span>
       <section id="random-cats">
         <article class="cat-card">
@@ -26,8 +33,5 @@
       <h2>Your favorite cats</h2>
       <!-- <section id="favorites"></section> -->
     </div>
-    <section id="upload-cat">
-      <h2>Upload a photo of Your favorite cat</h2>
-    </section>
   </body>
 </html>

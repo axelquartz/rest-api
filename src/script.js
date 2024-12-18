@@ -14,7 +14,27 @@ const API_KEY = "live_KLPbsvkAcNRHqVoNHvclFCYyDUu0KxlF1AaDr3mXckeJCWQivtx2uO7wdU
 const URL_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=2&breed_ids=rblu&`;
 const URL_FAVORITES = `https://api.thecatapi.com/v1/favourites`;
 const URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`;
+const URL_UPLOAD_IMAGES = "https://api.thecatapi.com/v1/images/upload";
 let data;
+
+async function uploadFile() {
+  const form = document.getElementById("upload-form");
+  const formData = new FormData(form);
+  console.log(formData.get("file").name);
+
+  const response = await fetch(URL_UPLOAD_IMAGES, {
+    method: "POST",
+    headers: {
+      // "Content-Type": "multipart/form-data",
+      "x-api-key": API_KEY,
+    },
+    body: formData,
+  });
+  data = await response.json();
+  console.log(data);
+
+  saveToFavorites(data.id);
+}
 
 async function fetchRandomCats() {
   const response = await fetch(URL_RANDOM, {
