@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/axelquartz/rest-api/issues"
   },
-  "homepage": "https://github.com/axelquartz/rest-api#readme"
+  "homepage": "https://github.com/axelquartz/rest-api#readme",
+  "dependencies": {
+    "axios": "^1.7.9"
+  }
 }

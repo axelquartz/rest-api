@@ -1,3 +1,5 @@
+// const { default: axios } = require("axios");
+
 const container = document.querySelector(".container");
 const createFavorites = document.createElement("section");
 createFavorites.id = "favorites";
@@ -16,6 +18,11 @@ const URL_FAVORITES = `https://api.thecatapi.com/v1/favourites`;
 const URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`;
 const URL_UPLOAD_IMAGES = "https://api.thecatapi.com/v1/images/upload";
 let data;
+const api = axios.create({
+  baseURL: "https://api.thecatapi.com/v1/",
+});
+
+api.defaults.headers.common["x-api-key"] = API_KEY;
 
 async function uploadFile() {
   const form = document.getElementById("upload-form");
@@ -44,6 +51,7 @@ async function fetchRandomCats() {
       "x-api-key": API_KEY,
     },
   });
+
   if (response.status !== 200) {
     errorDisplay.textContent = `${data.message}: in fetchRandomCats`;
   } else {
@@ -68,7 +76,7 @@ async function fetchFavorites() {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "X-API-KEY": API_KEY,
+      "x-api-key": API_KEY,
     },
   });
   data = await response.json();
@@ -97,27 +105,30 @@ async function fetchFavorites() {
 }
 
 async function saveToFavorites(id) {
-  const response = await fetch(URL_FAVORITES, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": API_KEY,
-    },
-    body: JSON.stringify({
-      image_id: id,
-    }),
+  // const response = await fetch(URL_FAVORITES, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     "X-API-KEY": API_KEY,
+  //   },
+  //   body: JSON.stringify({
+  //     image_id: id,
+  //   }),
+  // });
+
+  const response = await api.post("/favourites", {
+    image_id: id,
   });
-  data = await response.json();
-  console.log(response);
-  console.log(data);
+
+  console.log(response.data);
   if (response.status !== 200) {
-    errorDisplay.textContent = `${response.status}, ${data.message}: in fetchFavorites`;
+    errorDisplay.textContent = `${response.status}, ${response.data.message}: in fetchFavorites`;
   } else {
     console.log(`Status: ${response.status}`);
     console.log("saved to favorites");
   }
   createFavorites.innerHTML = "";
-  fetchFavorites();
+  await fetchFavorites();
 }
 
 async function deleteFromFavorites(id) {
